@@ -4,7 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+common = { path = "../common" }
 bevy = "0.7"
-flume = "0.10.12"       # Used for threaded message passing
-async-net = "1.6.1"     # Used for UDP provider
-futures-lite = "1.12.0" # Used to block on async socket operations
