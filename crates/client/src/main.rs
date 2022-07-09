@@ -8,8 +8,8 @@ fn main() {
     app.add_plugins(MinimalPlugins);
     app.add_plugin(LogPlugin::default());
     app.add_plugin(NetworkPlugin::new(0)); // Pick no listen port since we're a client
-    app.add_system(send_client_message);
     app.add_system(print_network_messages);
+    app.add_system(send_client_message);
     app.run();
 }
 

@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy::tasks::{Task, TaskPool, TaskPoolBuilder};
+use bevy::tasks::{Task, TaskPool};
 
 use async_net::{SocketAddr, UdpSocket};
 use flume::{Receiver, Sender, TryRecvError, TrySendError};
@@ -150,7 +150,7 @@ impl Plugin for NetworkPlugin {
             net.startup(port, runtime.into_inner())
         };
 
-        app.insert_resource(TaskPoolBuilder::new().build())
+        app.init_resource::<TaskPool>()
             .insert_resource(Network::new())
             .add_startup_system(startup);
     }
