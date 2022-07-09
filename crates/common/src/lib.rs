@@ -71,6 +71,10 @@ impl Network {
 
     pub fn startup(&mut self, port: u16, runtime: &TaskPool) {
         let socket = bind_socket(port);
+        if port != 0 {
+            info!("listening on {}", socket.local_addr().unwrap());
+        }
+
         let send_relay = self.send_channel.receiver.clone();
         let recv_relay = self.recv_channel.sender.clone();
         self.send_task = Some(runtime.spawn(send_loop(socket.clone(), send_relay)));
