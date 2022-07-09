@@ -144,18 +144,19 @@ impl NetworkPlugin {
     pub fn new(listen_port: u16) -> Self {
         NetworkPlugin { listen_port }
     }
+
+    fn build_net_startup(&self) -> impl Fn(ResMut<Network>, Res<TaskPool>) {
+        let port = self.listen_port;
+        move |mut net: ResMut<Network>, runtime: Res<TaskPool>| {
+            net.startup(port, runtime.into_inner())
+        }
+    }
 }
 
 impl Plugin for NetworkPlugin {
     fn build(&self, app: &mut App) {
-        // Add a startup system that incorporates the listen port we selected
-        let port = self.listen_port;
-        let startup = move |mut net: ResMut<Network>, runtime: Res<TaskPool>| {
-            net.startup(port, runtime.into_inner())
-        };
-
         app.init_resource::<TaskPool>()
             .insert_resource(Network::new())
-            .add_startup_system(startup);
+            .add_startup_system(self.build_net_startup());
     }
 }
